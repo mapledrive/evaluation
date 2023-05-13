@@ -1,31 +1,41 @@
-# Create React App
+# Интерфейс системы оценки / бана / поощрений пользователей
 
-This directory is a brief example of a [Create React App](https://github.com/facebook/create-react-app) site that can be deployed to Vercel with zero configuration.
+## Задание
+Сделать интерфейс системы оценки пользователей: подсчёта количества нарушений и полезных действий на сайте.
 
-## Deploy Your Own
+Визуально он состоит из двух частей:
+- список пользователей (запрашивается с бэкенда, [public api](https://random-data-api.com/api/users/random_user?size=3), можно взять другое API, которое нравится);
+- список пользователей с оценками: положительными и отрицательными.
 
-Deploy your own Create React App project with Vercel.
+Пользователь интерфейса может взаимодействовать с этими списками, изменяя оценки.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/create-react-app&template=create-react-app)
+В левой колонке список пользователей, для управления списком есть две кнопки:
+- обновить список (старые пользователи исчезнут, новые появятся);
+- следующая страница (старые пользователи остаются в списке, новые добавляются ниже).
+	> (предложенное API каждый раз отдаёт случайные данные, но можно имитировать запрос новой страницы, добавляя GET-параметр `page=N` в запрос)
 
-_Live Example: https://create-react-template.vercel.app/_
+Рядом с каждой записью (пользователем) есть кнопки изменения рейтинга: `+` и `-`. При нажатии на одну из кнопок, выбранная запись попадает в соответствующую вкладку правой колонки (из левого списка удаляется) — эта вкладка должна стать активной, если не была.
 
-## Available Scripts
+Правая колонка содержит две вкладки с похожими списками. Записи в этих списках отличаются от записей в левой колонке тем, что у них есть значение (целое число), отображающее текущий рейтинг пользователя. В этом списке так же кнопками `+` и `-` можно менять рейтинг пользователя. При установлении рейтинга в значение 0, в строку добавляется кнопка удаления пользователя из текущего списка и возвращения его в левый список.
 
-In the project directory, you can run:
+Границы рейтинга: (-5;5]. При достижении граничного значения должно появляться модальное окно с подтверждением:
+- Нижняя граница: "Пора забанить {username}. Сделать это?"
+- Верхняя граница: "Нужно вознаградить {username}. Сделать это?"
 
-### `npm start`
+По нажатию кнопки "Да" пользователь удаляется из правой колонки и возвращается в левую, можно начать с ним работать заново.
 
-Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Требования
+- Каждое действие пользователя должно логироваться (в текущей реализации - просто в консоль)
+- Разработка ведётся на фреймворке React, с использованием языка Typescript.
+- Присутствуют юнит-тесты (не обязательно покрывать всё, но хотя бы основные должны быть).
+- Отдельным плюсом будет использование [БЭМ-методологии](https://ru.bem.info/methodology/quick-start/).
+- Ещё одним плюсом будут комментарии в коде.
 
-The page will reload when you make changes. You may also see any lint errors in the console.
+## Опционально
+- При перезагрузке страницы последнее состояние восстанавливается.
+- Адаптация под мобильные устройства.
+- Дополнительная функциональность — по желанию.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.
-
-It correctly bundles React in production mode and optimizes the build for the best performance. The build is minified and the filenames include the hashes.
+## Дизайн
+- Можно использовать библиотеки готовых компонентов.
+- Мы оценим, если интерфейс будет удобным и приятным.
